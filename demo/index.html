@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Basic Demo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body, html {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      .content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        color: white;
+        font-size: 1.5rem;
+        background-color: grey;
+        font-weight: bolder;
+      }
+      
+      button {
+        position: absolute;
+        bottom: 30px;
+        left: 47%;
+        width: 15%;
+        height: 5%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      Touch the screen with the stylus to read the preferred properties
+    </div>
+    <button type="button">Set random preferred attributes</button>
+    <script type=module>
+      import {
+        getPreferredColor,
+        getPreferredWidth,
+        getPreferredStyle,
+        setPreferredColor,
+        setPreferredWidth,
+        setPreferredStyle
+      } from "../src/index.js";
+      const styleMap = {
+        1 : 'INK',
+        2 : 'PENCIL',
+        3 : 'HIGHLIGHTER',
+        4 : 'MARKER',
+        5 : 'BRUSH',
+        6 : 'NOPREF' 
+      };
+
+      function getRandomNumber(min, max) {
+          return Math.round(Math.random() * (max - min) + min);
+      }
+
+      function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+
+      let content = document.querySelector('.content');
+
+      async function readPreferredProperties() {
+        const width = await getPreferredWidth();
+        console.log('Preferred Width: ' + width);
+        const color = await getPreferredColor();
+        console.log('Preferred Color: ' + color);
+        content.style.backgroundColor = color;
+        const style = await getPreferredStyle();
+        console.log('Preferred Style: ' + style);
+        content.innerHTML = 'Stylus Preferred Width : ' + width + '<br>' +
+        'Stylus Preferred Style: ' + style;
+      }
+
+      content.addEventListener('click', (event) => {
+        if (event.pointerType != 'pen')
+          return;
+        readPreferredProperties();
+      });
+
+      let button = document.querySelector('button');
+      button.onclick = async () => {
+        const randomWidth = getRandomNumber(1, 255);
+        const randomStyle = styleMap[getRandomNumber(1, 6)];
+        const randomColor = getRandomColor();
+        console.log('Setting pen customizations to : \n width : ' + 
+          randomWidth + ' \n style : ' + randomStyle + '\n color : ' + randomColor)
+        await setPreferredColor(randomColor);
+        await setPreferredWidth(randomWidth);
+        await setPreferredStyle(randomStyle);
+        setTimeout(() => readPreferredProperties(), 200);
+      }
+    </script>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+{
+    "name": "pen-customizations-polyfill",
+    "version": "1.0.0",
+    "description": "Polyfill for the Pen Customizations API",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/darktears/pen-customizations-polyfill"
+    },
+    "type": "module",
+    "module": "build/pen-customizations-polyfill.js",
+    "main": "build/pen-customizations-polyfill.js",
+    "tags": [
+        "pointerevents",
+        "pen-customizations",
+        "browser",
+        "node",
+        "polyfill",
+        "w3c",
+        "wicg"
+    ],
+    "scripts": {
+        "build": "microbundle -f es -o build/",
+        "dev": "concurrently serve \"microbundle -f es watch\""
+    },
+    "files": [
+        "!/demo/",
+        "!/src/"
+    ],
+    "devDependencies": {
+        "concurrently": "^8.0.1",
+        "microbundle": "^0.15.1",
+        "serve": "^14.2.0"
+    },
+    "author": {
+        "name": "Alexis Menard",
+        "email": "alexis.menard@intel.com"
+    },
+    "license": "MIT",
+    "dependencies": {}
+}
